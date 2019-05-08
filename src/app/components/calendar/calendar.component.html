@@ -1,0 +1,44 @@
+  <div class="calendar-container">
+
+    <!-- Calendar header -->
+    <div class="row text-header">
+      <div class="col-12 pt-4 pb-4 text-center">
+        <span>Calendar</span>
+      </div>
+    </div>
+
+    <!-- Month and Year Selectors-->
+    <div class="row date-selector">
+      <div class="col-md-6">
+        <div class="form-group form-inline">
+          <span class="col-md-2"></span>
+          <label for="month" class="col-md-4 mt-md-19">Month</label>
+          <select id="month" class="form-control col-md-5" (change)="changeDate()">
+            <option *ngFor="let month of monthsList" [value]="month">{{month}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group form-inline">
+          <label for="year" class="col-md-4">Year</label>
+          <select id="year" class="form-control col-md-5" (change)="changeDate()">
+            <option *ngFor="let year of yearsList" [value]="year">{{year}}</option>
+          </select>
+          <span class="col-2"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar days-->
+    <div class="week names">
+      <span class="day" *ngFor="let weekday of weekdaysList">{{weekday}}</span>
+    </div>
+
+    <div class="week">
+      <span class="day" *ngFor="let day of daysList">
+        {{day}}
+      </span>
+    </div>
+
+</div>

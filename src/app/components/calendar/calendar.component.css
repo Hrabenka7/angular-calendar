@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+label {
+  padding-right: 20px
+}
+
+.calendar-container {
+  width: 840px;
+  height: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  text-align: center;
+  border: 2px solid #010280;
+}
+
+.text-header {
+  background-color: #2828bc;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  height: 10%;
+  line-height: 300%;
+}
+
+.date-selector {
+  padding: 10px 0;
+}
+
+.calendar-container > div.week {
+  float: left;
+  width: 100%;
+  border-top: solid 1px #cccccc;
+}
+
+.calendar-container > div.week:first-child {
+  border-top: none;
+}
+
+.calendar-container > div.week > span.day {
+  float: left;
+  width: 14%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border-left: solid 1px #cccccc;
+  font-size: 0.75em;
+  text-align: center;
+  height: 50px;
+  line-height: 25px !important;
+  display: inline-block;
+  vertical-align: middle;
+  background: white;
+  cursor: pointer;
+  color: black;
+}
+
+.calendar-container > div.week.names > span {
+  color: #2875c7;
+  font-weight: bold;
+}
+
