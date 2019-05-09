@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { WeatherService } from './services/weather.service';
 import { routing } from './app.routing';
-
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,8 @@ import { routing } from './app.routing';
   imports: [
     BrowserModule,
     HttpClientModule,
-    routing
+    routing,
+    FormsModule,
   ],
   providers: [WeatherService],
   bootstrap: [AppComponent]
