@@ -9,13 +9,12 @@ import { WeatherService } from '../../services/weather.service';
 export class CalendarComponent implements OnInit {
 
   daysList: Array<any>;
-  monthIndex: any;
+  monthIndex: number;
   month: any;
   monthsList: Array<string>;
   weekdaysList: Array<string>;
   year: number;
   yearsList: Array<number>;
-  // day: number;
   weatherArray: Array<any>;
   currentDate: any;
   numberDaysDisplayPrevMonth: number;
@@ -34,10 +33,12 @@ export class CalendarComponent implements OnInit {
     this.weatherArray = [];
     this.currentDate = moment().format('YYYY-MM-DD');
     this.displayedDaysCountNextMonth = 0;
+    this.numberDaysDisplayPrevMonth = 0;
 
     // initialize calendar with current month data
     this.loadInitData();
 
+    // add weather to 5 following days (from current day on)
     this.weatherService.getWeatherForecast()
       .subscribe((data => {
         this.fillWeatherArray(data);
@@ -47,22 +48,16 @@ export class CalendarComponent implements OnInit {
 
   loadInitData() {
     moment.locale('en_GB');
-
-    // set Weekdays, Months, Year Lists
     this.monthsList = moment.months();
     this.weekdaysList = moment.weekdaysShort(true);
-    for (let i = 2019; i <= 2029; i++) {  // add dynamic end condition e.g. current year + 10
+    const currentYear = moment().year();
+    for (let i = currentYear; i <= currentYear + 10; i++) {
       this.yearsList.push(i);
     }
 
-    // set displayed days for current month
     const monthNumber = this.getMonthNumber(this.month);
     const daysObject = this.createDaysObject(this.year, monthNumber);
     this.setDisplayedDates(daysObject);
-
-    console.log('daysList', this.daysList);
-    console.log('cur', this.currentDate);
-    console.log('random date', this.daysList[3].date);
 
   }
 
@@ -96,12 +91,10 @@ export class CalendarComponent implements OnInit {
     return daysObject;
   }
 
-
+  // set all displayed days for current month
   setDisplayedDates(daysObject) {
     this.daysList = [];
-
     this.displayedDaysCountNextMonth = 7 - (daysObject.selectedMonthLastDayIndex);
-    console.log('displayed Days of Next Month', this.displayedDaysCountNextMonth);
 
     const startSelectedMonth = daysObject.selectedMonthFirstDayDate;
     const endSelectedMonth = daysObject.selectedMonthLastDayDate;
@@ -114,10 +107,14 @@ export class CalendarComponent implements OnInit {
     const startPreviousMonthDisplay = moment().endOf('month').subtract(1, 'month').subtract(daysObject.previousMonthLastDayIndex - 1, 'day');
 
     this.numberDaysDisplayPrevMonth = endPreviousMonth.diff(startPreviousMonthDisplay, 'days');
-    console.log('grey days beginning', this.numberDaysDisplayPrevMonth);
 
+    // displayed days previous month
     this.setDaysListArray(startPreviousMonthDisplay, endPreviousMonth);
+
+    // displayed days current month
     this.setDaysListArray(startSelectedMonth, endSelectedMonth);
+
+    // displayed days next month
     this.setDaysListArray(startNextMonth, endNextMonthDisplay);
 
   }
@@ -139,7 +136,9 @@ export class CalendarComponent implements OnInit {
     const daysObject = this.createDaysObject(this.year, monthNumber);
     this.setDisplayedDates(daysObject);
 
-    // if the date is changed back to current or one month after
+    // if the month is changed back to the current month
+    // or to current month + 1  => e.g. to see weather of first days of June if current date is 31.5.2019
+    // tslint:disable-next-line:triple-equals
     if ((monthNumber - 1 === moment().month() || monthNumber === moment().month()) && this.year == moment().year()) {
       this.weatherService.getWeatherForecast()
         .subscribe((data => {
@@ -149,7 +148,7 @@ export class CalendarComponent implements OnInit {
     }
   }
 
-  // filter weather received from api into one temperature per day
+  // filter weather received from api into one weather record per day (API returns another weather record every 3 hours a day)
   fillWeatherArray(data) {
     // tslint:disable-next-line:no-string-literal
     data['list'].forEach(element => {
@@ -165,7 +164,7 @@ export class CalendarComponent implements OnInit {
     });
   }
 
-  // merge arrays. Add weather for specific dates into dayList array
+  // merge arrays. Add weather for specific dates into daysList[]
   addWeatherToDays() {
     for (const day of this.daysList) {
       for (const weather of this.weatherArray) {
