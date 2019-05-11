@@ -19,6 +19,7 @@ export class CalendarComponent implements OnInit {
   weatherArray: Array<any>;
   currentDate: any;
   numberDaysDisplayPrevMonth: number;
+  displayedDaysCountNextMonth: number;
 
   constructor(private weatherService: WeatherService) { }
 
@@ -32,6 +33,7 @@ export class CalendarComponent implements OnInit {
     this.yearsList = [];
     this.weatherArray = [];
     this.currentDate = moment().format('YYYY-MM-DD');
+    this.displayedDaysCountNextMonth = 0;
 
     // initialize calendar with current month data
     this.loadInitData();
@@ -98,14 +100,14 @@ export class CalendarComponent implements OnInit {
   setDisplayedDates(daysObject) {
     this.daysList = [];
 
-    const displayedDaysCountNextMonth = 7 - (daysObject.selectedMonthLastDayIndex);
-    console.log('displayed Days of Next Month', displayedDaysCountNextMonth);
+    this.displayedDaysCountNextMonth = 7 - (daysObject.selectedMonthLastDayIndex);
+    console.log('displayed Days of Next Month', this.displayedDaysCountNextMonth);
 
     const startSelectedMonth = daysObject.selectedMonthFirstDayDate;
     const endSelectedMonth = daysObject.selectedMonthLastDayDate;
 
     const startNextMonth = moment().startOf('month').add(1, 'month');
-    const endNextMonthDisplay = moment().startOf('month').add(1, 'month').add(displayedDaysCountNextMonth - 1, 'day');
+    const endNextMonthDisplay = moment().startOf('month').add(1, 'month').add(this.displayedDaysCountNextMonth - 1, 'day');
 
     const endPreviousMonth = moment().endOf('month').subtract(1, 'month');
     // tslint:disable-next-line:max-line-length

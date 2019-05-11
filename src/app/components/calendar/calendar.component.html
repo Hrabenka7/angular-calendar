@@ -37,6 +37,9 @@
 
   <div class="week">
     <span class="day" *ngFor="let day of daysList; let i = index">
+      <span class="today" *ngIf="day.date === currentDate">{{day.day}}</span>
+      <span class="gray-day" *ngIf="i <= numberDaysDisplayPrevMonth || i >= (daysList?.length - displayedDaysCountNextMonth)">{{day.day}}</span>
+      <span *ngIf="day.date != currentDate && (i > numberDaysDisplayPrevMonth && i < (daysList?.length - displayedDaysCountNextMonth))">{{day.day}}</span>
       <p>{{day.desc}}{{day.temp}}</p>
     </span>
   </div>
