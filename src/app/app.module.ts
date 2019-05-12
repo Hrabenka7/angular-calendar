@@ -6,11 +6,13 @@ import { CalendarComponent } from './components/calendar/calendar.component';
 import { WeatherService } from './services/weather.service';
 import { routing } from './app.routing';
 import { FormsModule } from '@angular/forms';
+import { ErrorComponent } from './components/error/error.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CalendarComponent
+    CalendarComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
